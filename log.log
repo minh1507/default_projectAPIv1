@@ -88,3 +88,10 @@
 [2023-06-06T17:28:39.165] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui-standalone-preset.js
 [2023-06-06T17:28:39.180] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui-init.js
 [2023-06-06T17:28:39.672] [FATAL] GET - Remote: undefined, path: /apis/favicon-32x32.png
+[2023-06-06T17:29:24.982] [FATAL] POST - Remote: http://localhost:3000, path: /api/auth/register
+[2023-06-06T17:35:29.787] [FATAL] GET - Remote: undefined, path: /apis/
+[2023-06-06T17:35:29.845] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui.css
+[2023-06-06T17:35:29.868] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui-bundle.js
+[2023-06-06T17:35:29.872] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui-standalone-preset.js
+[2023-06-06T17:35:29.875] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui-init.js
+[2023-06-06T17:35:30.161] [FATAL] GET - Remote: undefined, path: /apis/favicon-32x32.png

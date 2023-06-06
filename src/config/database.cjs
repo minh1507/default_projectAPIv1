@@ -5,6 +5,7 @@ const username = process.env.DB_USER;
 const database = process.env.DB_NAME;
 const timezone = process.env.DB_TIMEZONE
 const port = process.env.DB_PORT
+const type = process.env.DB_TYPE;
 
 module.exports = {
   development: {
@@ -12,7 +13,7 @@ module.exports = {
     database,
     host,
     port: port,
-    dialect: "mysql",
+    dialect: type,
     query: {
       raw: true,
     },
