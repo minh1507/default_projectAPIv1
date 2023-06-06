@@ -8,24 +8,20 @@ import { Sequelize } from "sequelize-typescript";
 
 import jwt from "jsonwebtoken";
 
-export const register = async (data: user) => {
+export const register = async (data: any) => {
   return new Promise(async (resolve, reject) => {
     try {
       const salt = genSaltSync(10);
       const hashPassword = hashSync(data.password, salt);
-      const record = await User.findOne({ where: { username: data.username } });
+      data.password = hashPassword;
 
-      if (!record) {
-        await User.create({
-          username: data.username,
-          password: hashPassword,
-          roleId: data.type,
-          accessToken: "",
-          refreshToken: "",
-        });
-        resolve({ mes: message.CREATE_ACCOUNT_SUCCESS });
-      }
-      resolve({ mes: message.DUBLICATE_RECORD_ACCOUNT });
+      await User.create({
+        ...data,
+        status: 1,
+        createDate: new Date(),
+      });
+
+      resolve(data.username);
     } catch (error) {
       reject(error);
     }
@@ -44,13 +40,7 @@ export const login = async (data: user) => {
             required: true,
           },
         ],
-        attributes: [
-          "username",
-          "password",
-          [Sequelize.col("role.name"), "role"],
-          "accessToken",
-          "refreshToken",
-        ],
+        attributes: ["username", "password", [Sequelize.col("role.name"), "role"], "accessToken", "refreshToken"],
         // plain: true,
         raw: true,
       });
@@ -69,21 +59,21 @@ export const login = async (data: user) => {
                 data: newData,
               },
               process.env.SECRET_TOKEN,
-              { expiresIn: "720h" }
+              { expiresIn: "720h" },
             );
             let newAccessToken = jwt.sign(
               {
                 data: newData,
               },
               process.env.PRIVATE_TOKEN,
-              { expiresIn: "24h" }
+              { expiresIn: "24h" },
             );
             await User.update(
               {
                 accessToken: newAccessToken,
                 refreshToken: newRefreshToken,
               },
-              { where: { username: record.username } }
+              { where: { username: record.username } },
             );
             newData.accessToken = newAccessToken;
             newData.refreshToken = newRefreshToken;
@@ -94,13 +84,13 @@ export const login = async (data: user) => {
                 data: newData,
               },
               process.env.PRIVATE_TOKEN,
-              { expiresIn: "24h" }
+              { expiresIn: "24h" },
             );
             await User.update(
               {
                 accessToken: newAccessToken,
               },
-              { where: { username: record.username } }
+              { where: { username: record.username } },
             );
             newData.accessToken = newAccessToken;
             newData.refreshToken = record.refreshToken;
@@ -121,21 +111,21 @@ export const login = async (data: user) => {
               data: newData,
             },
             process.env.SECRET_TOKEN,
-            { expiresIn: "720h" }
+            { expiresIn: "720h" },
           );
           let newAccessToken = jwt.sign(
             {
               data: newData,
             },
             process.env.PRIVATE_TOKEN,
-            { expiresIn: "24h" }
+            { expiresIn: "24h" },
           );
           await User.update(
             {
               accessToken: newAccessToken,
               refreshToken: newRefreshToken,
             },
-            { where: { username: record.username } }
+            { where: { username: record.username } },
           );
           newData.accessToken = newAccessToken;
           newData.refreshToken = newRefreshToken;
@@ -144,7 +134,7 @@ export const login = async (data: user) => {
         resolve({ errCode: 1 });
       }
 
-      resolve({ errCode: 2, mes: message.ACCOUNT_NOT_FOUND });
+      resolve({ errCode: 2 });
     } catch (error) {
       reject(error);
     }
@@ -156,11 +146,7 @@ export const refreshTK = async (data: userWithRefresh) => {
     try {
       const record = await User.findOne({ where: { username: data.username } });
 
-      if (
-        record &&
-        record.username == data.username &&
-        record.refreshToken == data.refreshToken
-      ) {
+      if (record && record.username == data.username && record.refreshToken == data.refreshToken) {
         const newData = {
           username: record.username,
         };
@@ -170,13 +156,13 @@ export const refreshTK = async (data: userWithRefresh) => {
               data: newData,
             },
             process.env.PRIVATE_TOKEN,
-            { expiresIn: "24h" }
+            { expiresIn: "24h" },
           );
           await User.update(
             {
               accessToken: newAccessToken,
             },
-            { where: { username: record.username } }
+            { where: { username: record.username } },
           );
           resolve({
             data: { username: record.username, accessToken: newAccessToken },
@@ -189,21 +175,21 @@ export const refreshTK = async (data: userWithRefresh) => {
               data: newData,
             },
             process.env.PRIVATE_TOKEN,
-            { expiresIn: "24h" }
+            { expiresIn: "24h" },
           );
           let newRefreshToken = jwt.sign(
             {
               data: newData,
             },
             process.env.SECRET_TOKEN,
-            { expiresIn: "720h" }
+            { expiresIn: "720h" },
           );
           await User.update(
             {
               accessToken: newAccessToken,
               refreshToken: newRefreshToken,
             },
-            { where: { username: record.username } }
+            { where: { username: record.username } },
           );
           resolve({
             data: {

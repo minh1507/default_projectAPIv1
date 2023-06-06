@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -10,8 +10,22 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: Sequelize.STRING,
+      name: { 
+        allowNull: false, type: Sequelize.STRING 
+      },
       note: Sequelize.TEXT,
+      status: {
+        allowNull: false,
+        type:Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      createBy: Sequelize.INTEGER,
+      createDate: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+      },
+      updateBy: Sequelize.INTEGER,
+      updateDate: Sequelize.DATE,
     });
   },
 

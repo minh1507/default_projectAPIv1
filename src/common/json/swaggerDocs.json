@@ -9,7 +9,7 @@
         "name": "MIT"
       }
   },
-  "host": "localhost:4000/api",
+  "host": "localhost:3000/api",
   "schemes": ["http", "https"],
   "tags": [
     {
@@ -60,8 +60,19 @@
         "password": {
           "type": "string"
         },
-        "type":{
+        "roleId":{
           "type": "number"
+        }
+      }
+    },
+    "Auth_Login": {
+      "type": "object",
+      "properties": {
+        "username":{
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
         }
       }
     },
@@ -155,7 +166,7 @@
             "name": "body",
             "description": "Login",
             "schema": {
-              "$ref": "#/definitions/Auth"
+              "$ref": "#/definitions/Auth_Login"
             }
           }
         ],

@@ -6,12 +6,6 @@ Install modules
   npm install
 ```
 
-## Docker
-
-```bash
-  docker run --network=host -dp 3000:3000 start
-```
-
 ## Build project
 
 ```bash

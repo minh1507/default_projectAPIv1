@@ -9,7 +9,19 @@ module.exports = {
       },
       name: Sequelize.STRING,
       age: Sequelize.INTEGER,
-      fileUrl: Sequelize.STRING
+      fileUrl: Sequelize.STRING,
+      status: {
+        allowNull: false,
+        type:Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      createBy: Sequelize.INTEGER,
+      createDate: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+      },
+      updateBy: Sequelize.INTEGER,
+      updateDate: Sequelize.DATE
     });
   },
   down: async (queryInterface, Sequelize) => {

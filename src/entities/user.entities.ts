@@ -16,6 +16,11 @@ interface UserAttributes {
   roleId: number;
   accessToken: string;
   refreshToken: string;
+  status: number;
+  createDate: Date;
+  createBy: number;
+  updateDate: Date;
+  updateBy: number;
 }
 interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
 type RoleType = typeof Role;
@@ -27,13 +32,13 @@ type RoleType = typeof Role;
 export class User extends Model<UserAttributes, UserCreationAttributes> {
   @Column({
     type: DataType.STRING,
-    allowNull: true,
+    allowNull: false,
   })
   username!: string;
 
   @Column({
     type: DataType.TEXT,
-    allowNull: true,
+    allowNull: false,
   })
   password!: string;
 
@@ -48,6 +53,36 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     allowNull: true,
   })
   refreshToken!: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+  })
+  status!: number 
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  createDate!: Date 
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  updateDate!: Date 
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  createBy!: number; 
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  updateBy!: number; 
 
   @ForeignKey(() => Role)
   @Column({ type: DataType.INTEGER, allowNull: false })

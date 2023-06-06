@@ -6,6 +6,11 @@ interface RoleAttributes {
   id: number;
   name: string;
   note: string;
+  status: number;
+  createDate: Date;
+  createBy: number;
+  updateDate: Date;
+  updateBy: number;
 }
 interface RoleCreationAttributes extends Optional<RoleAttributes, "id"> {}
 type UserType = typeof User
@@ -19,7 +24,7 @@ export class Role extends Model<RoleAttributes, RoleCreationAttributes> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: true,
+    allowNull: false,
   })
   name!: string;
 
@@ -28,4 +33,34 @@ export class Role extends Model<RoleAttributes, RoleCreationAttributes> {
     allowNull: true,
   })
   note!: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+  })
+  status!: number;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  createDate!: Date 
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  updateDate!: Date 
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  createBy!: number; 
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  updateBy!: number; 
 }
