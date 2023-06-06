@@ -81,3 +81,10 @@
 [2023-06-03T17:46:08.461] [FATAL] POST - Remote: http://localhost:3000, path: /api/auth/register
 [2023-06-03T17:46:25.724] [FATAL] POST - Remote: http://localhost:3000, path: /api/auth/register
 [2023-06-03T17:46:49.862] [FATAL] POST - Remote: http://localhost:3000, path: /api/auth/register
+[2023-06-06T17:28:39.095] [FATAL] GET - Remote: undefined, path: /apis
+[2023-06-06T17:28:39.113] [FATAL] GET - Remote: undefined, path: /apis/
+[2023-06-06T17:28:39.154] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui.css
+[2023-06-06T17:28:39.162] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui-bundle.js
+[2023-06-06T17:28:39.165] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui-standalone-preset.js
+[2023-06-06T17:28:39.180] [FATAL] GET - Remote: undefined, path: /apis/swagger-ui-init.js
+[2023-06-06T17:28:39.672] [FATAL] GET - Remote: undefined, path: /apis/favicon-32x32.png
