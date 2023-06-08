@@ -46,7 +46,7 @@
 
 ## 🚀 About Me
 
-Hi, I'm Dương Đức Anh! 👋, I'm a fullstack developer. This is the first default project I built in college. Its free, so you can use it for learning. But not for business. Thank you all!
+Hi, I'm Dương Đức Anh! 👋, I'm a fullstack developer. This is the dora app I built for student to manage project. Its free, so you can use it for learning. But not for business. Thank you all!
 
 ## Feedback
 
