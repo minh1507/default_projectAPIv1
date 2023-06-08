@@ -14,12 +14,14 @@ export const authorizations = async (
       let token = authorization.split(" ");
       if (token.length === 2 && token[0] == "Bearer") {
         var decoded = jwt.verify(token[1], process.env.PRIVATE_TOKEN);
-        let record = await User.findOne({
-          where: { username: decoded.data.username },
-        });
-
-        if (record && record.accessToken == token[1]) {
-          return next();
+        if(decoded){
+          let record = await User.findOne({
+            where: { username: decoded.data.username },
+          });
+  
+          if (record && record.accessToken == token[1]) {
+            return next();
+          }
         }
         return res
           .status(401)

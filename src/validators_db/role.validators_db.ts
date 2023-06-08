@@ -1,4 +1,4 @@
-import { Role } from "../../entities/role.entities.ts";
+import { Role } from "../entities/role.entities.ts";
 
 export const findRoleById = async (id: number) => {
     return new Promise(async (resolve, reject) => {

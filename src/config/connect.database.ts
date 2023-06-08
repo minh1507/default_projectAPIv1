@@ -3,6 +3,8 @@ import { Cat } from "../entities/cat.entities.ts";
 import { User } from "../entities/user.entities.ts";
 import { Role } from "../entities/role.entities.ts";
 import { Dialect } from "sequelize";
+import { Gender } from "../entities/gender.entities.ts";
+import { Address } from "../entities/address.entities.ts";
 
 const host = process.env.DB_HOST;
 const database = process.env.DB_NAME;
@@ -14,7 +16,7 @@ export const sequelize = new Sequelize(database as string, username as string, u
   dialect: type,
   username: username,
   logging: false,
-  models: [Cat, User, Role]
+  models: [Cat, User, Role, Gender, Address]
 });
 
 export const connectDB = async () => {

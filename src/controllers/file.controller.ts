@@ -13,7 +13,8 @@ export const file = async (req: any, res: Response) => {
 };
 
 export const fileByName = async (req: any, res: Response) => {
-  let name = req.params
-  let url = `https://localhost:4000/static/png/${name.id}`
+  let name = req.params.id
+  let path = req.params.path
+  let url = `http://localhost:3000/static/${path}/${name}`
   return res.status(200).json(url);
 };

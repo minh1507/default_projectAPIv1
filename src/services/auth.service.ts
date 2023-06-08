@@ -17,6 +17,8 @@ export const register = async (data: any) => {
 
       await User.create({
         ...data,
+        genderId: 1,
+        addressId: 1,
         status: 1,
         createDate: new Date(),
       });
@@ -28,84 +30,17 @@ export const register = async (data: any) => {
   });
 };
 
-export const login = async (data: user) => {
+export const login = async (data: any) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const record: any = await User.findOne({
-        where: { username: data.username },
-        include: [
-          {
-            model: Role,
-            attributes: [],
-            required: true,
-          },
-        ],
-        attributes: ["username", "password", [Sequelize.col("role.name"), "role"], "accessToken", "refreshToken"],
-        // plain: true,
-        raw: true,
-      });
-
-      if (record && record.refreshToken) {
+      let record = data.result;
+      if (record.refreshToken) {
         var newData: any = {
           username: record.username,
+          role: record.role,
         };
-        let check = compareSync(data.password, record.password);
-        newData.role = record.role;
 
-        if (check) {
-          if (isTokenExpired(record.refreshToken)) {
-            let newRefreshToken = jwt.sign(
-              {
-                data: newData,
-              },
-              process.env.SECRET_TOKEN,
-              { expiresIn: "720h" },
-            );
-            let newAccessToken = jwt.sign(
-              {
-                data: newData,
-              },
-              process.env.PRIVATE_TOKEN,
-              { expiresIn: "24h" },
-            );
-            await User.update(
-              {
-                accessToken: newAccessToken,
-                refreshToken: newRefreshToken,
-              },
-              { where: { username: record.username } },
-            );
-            newData.accessToken = newAccessToken;
-            newData.refreshToken = newRefreshToken;
-            resolve({ data: newData, errCode: 0 });
-          } else {
-            let newAccessToken = jwt.sign(
-              {
-                data: newData,
-              },
-              process.env.PRIVATE_TOKEN,
-              { expiresIn: "24h" },
-            );
-            await User.update(
-              {
-                accessToken: newAccessToken,
-              },
-              { where: { username: record.username } },
-            );
-            newData.accessToken = newAccessToken;
-            newData.refreshToken = record.refreshToken;
-            resolve({ data: newData, errCode: 0 });
-          }
-        }
-        resolve({ errCode: 1 });
-      }
-
-      if (record && !record.refreshToken) {
-        var newData: any = {
-          username: record.username,
-        };
-        let check = compareSync(data.password, record.password);
-        if (check) {
+        if (isTokenExpired(record.refreshToken)) {
           let newRefreshToken = jwt.sign(
             {
               data: newData,
@@ -129,79 +64,119 @@ export const login = async (data: user) => {
           );
           newData.accessToken = newAccessToken;
           newData.refreshToken = newRefreshToken;
-          resolve({ data: newData, errCode: 0 });
+          resolve({ data: newData });
+        } else {
+          let newAccessToken = jwt.sign(
+            {
+              data: newData,
+            },
+            process.env.PRIVATE_TOKEN,
+            { expiresIn: "24h" },
+          );
+          await User.update(
+            {
+              accessToken: newAccessToken,
+            },
+            { where: { username: record.username } },
+          );
+          newData.accessToken = newAccessToken;
+          newData.refreshToken = record.refreshToken;
+          resolve({ data: newData });
         }
-        resolve({ errCode: 1 });
-      }
+      } else {
+        var newData: any = {
+          username: record.username,
+          role: record.role,
+        };
 
-      resolve({ errCode: 2 });
+        let newRefreshToken = jwt.sign(
+          {
+            data: newData,
+          },
+          process.env.SECRET_TOKEN,
+          { expiresIn: "720h" },
+        );
+        let newAccessToken = jwt.sign(
+          {
+            data: newData,
+          },
+          process.env.PRIVATE_TOKEN,
+          { expiresIn: "24h" },
+        );
+        await User.update(
+          {
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+          },
+          { where: { username: record.username } },
+        );
+        newData.accessToken = newAccessToken;
+        newData.refreshToken = newRefreshToken;
+        resolve({ data: newData });
+      }
     } catch (error) {
       reject(error);
     }
   });
 };
 
-export const refreshTK = async (data: userWithRefresh) => {
+export const refreshTK = async (data: any) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const record = await User.findOne({ where: { username: data.username } });
+      let record = data.result;
 
-      if (record && record.username == data.username && record.refreshToken == data.refreshToken) {
-        const newData = {
-          username: record.username,
-        };
-        if (!isTokenExpired(record.refreshToken)) {
-          let newAccessToken = jwt.sign(
-            {
-              data: newData,
-            },
-            process.env.PRIVATE_TOKEN,
-            { expiresIn: "24h" },
-          );
-          await User.update(
-            {
-              accessToken: newAccessToken,
-            },
-            { where: { username: record.username } },
-          );
-          resolve({
-            data: { username: record.username, accessToken: newAccessToken },
-            errCode: 0,
-          });
-        }
-        if (isTokenExpired(record.refreshToken)) {
-          let newAccessToken = jwt.sign(
-            {
-              data: newData,
-            },
-            process.env.PRIVATE_TOKEN,
-            { expiresIn: "24h" },
-          );
-          let newRefreshToken = jwt.sign(
-            {
-              data: newData,
-            },
-            process.env.SECRET_TOKEN,
-            { expiresIn: "720h" },
-          );
-          await User.update(
-            {
-              accessToken: newAccessToken,
-              refreshToken: newRefreshToken,
-            },
-            { where: { username: record.username } },
-          );
-          resolve({
-            data: {
-              username: record.username,
-              accessToken: newAccessToken,
-              refreshToken: newRefreshToken,
-            },
-            errCode: 0,
-          });
-        }
+      const newData = {
+        username: record.username,
+        role: record.role
+      };
+      if (!isTokenExpired(record.refreshToken)) {
+        let newAccessToken = jwt.sign(
+          {
+            data: newData,
+          },
+          process.env.PRIVATE_TOKEN,
+          { expiresIn: "24h" },
+        );
+        await User.update(
+          {
+            accessToken: newAccessToken,
+          },
+          { where: { username: record.username } },
+        );
+        resolve({
+          data: { username: record.username, accessToken: newAccessToken }
+        });
       }
-      resolve({ errCode: 1 });
+      if (isTokenExpired(record.refreshToken)) {
+        let newAccessToken = jwt.sign(
+          {
+            data: newData,
+          },
+          process.env.PRIVATE_TOKEN,
+          { expiresIn: "24h" },
+        );
+        let newRefreshToken = jwt.sign(
+          {
+            data: newData,
+          },
+          process.env.SECRET_TOKEN,
+          { expiresIn: "720h" },
+        );
+        await User.update(
+          {
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+          },
+          { where: { username: record.username } },
+        );
+        resolve({
+          data: {
+            username: record.username,
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+          }
+        });
+      }
     } catch (error) {
       reject(error);
     }

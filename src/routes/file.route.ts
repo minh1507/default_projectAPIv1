@@ -8,7 +8,7 @@ let router = express.Router();
 
 let fileRoute = (app: any) => {
   router.post("/create", file);
-  router.get("/:id", fileByName);
+  router.get("/:path/:id", fileByName);
   return app.use("/api/file", router);
 };
 

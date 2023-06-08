@@ -27,6 +27,24 @@ module.exports = {
         allowNull: false, 
         type: Sequelize.STRING.BINARY 
       },
+      email:{
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      genderId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "genders",
+          key: "id",
+        },
+      },
+      addressId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "addresses",
+          key: "id",
+        },
+      },
       accessToken: Sequelize.TEXT,
       refreshToken: Sequelize.TEXT,
       status: {

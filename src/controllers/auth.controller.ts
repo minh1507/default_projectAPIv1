@@ -14,12 +14,12 @@ export const register = async (req: Request, res: Response) => {
     let result = await service.register(data);
     let release = {
       data: result,
-      mes: message.CREATE_ACCOUNT_SUCCESS
-    }
+      mes: message.CREATE_ACCOUNT_SUCCESS,
+    };
     return res.status(200).json(responseAPISucess(release));
   }
 
-  return res.status(200).json({errors: response.array()})
+  return res.status(200).json({ errors: response.array() });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -29,34 +29,29 @@ export const login = async (req: Request, res: Response) => {
   if (response.isEmpty()) {
     let result: any = await service.login(data);
     let release = {
-      data: req.body.username,
-      mes: ""
-    }
-    if (!result.errCode) {
-      release.data = result.data;
-      release.mes = message.LOGIN_SUCCESS
-      return res.status(200).json(responseAPISucess(release));
-    }
-    if (result.errCode == 2) {
-      release.mes = message.ACCOUNT_NOT_FOUND
-      return res.status(200).json(responseAPIFailed(release));
-    }
-    if (result.errCode == 1){
-      release.mes = message.WRONG_PASSWORD_COMPARE
-      return res.status(200).json(responseAPIFailed(release))
-    }
+      data: result.data,
+      mes: message.LOGIN_SUCCESS,
+    };
+
+    return res.status(200).json(responseAPISucess(release));
   }
-  return res.status(200).json({errors: response.array()});
+  return res.status(200).json({ errors: response.array() });
 };
 
 export const refresh = async (req: Request, res: Response) => {
-  let data: userWithRefresh = req.body;
-  if (validator.refreshTK(data)) {
+  let data: any = req.body;
+
+  let response = validationResult(req);
+
+  if (response.isEmpty()) {
     let result: any = await service.refreshTK(data);
-    if (!result.errCode) {
-      return res.status(200).json(result.data);
-    }
-    return res.status(400).json({ mes: message.WRONG_USERNAME_REFRESHTK });
+
+    let release = {
+      data: result.data,
+      mes: message.TOKEN_HANDLE_EXPIRE_SUCCESS,
+    };
+
+    return res.status(200).json(responseAPISucess(release));
   }
-  return res.status(400).json({ mes: message.INVALID_BODY_VALUE });
+  return res.status(200).json({ errors: response.array() });
 };

@@ -8,6 +8,9 @@ import {
 } from "sequelize-typescript";
 import { Optional } from "sequelize";
 import { Role } from "./role.entities.ts";
+import { Gender } from "./gender.entities.ts";
+import { Address } from "./address.entities.ts";
+
 
 interface UserAttributes {
   id: number;
@@ -16,6 +19,9 @@ interface UserAttributes {
   roleId: number;
   accessToken: string;
   refreshToken: string;
+  email: string;
+  genderId: number;
+  addressId: number;
   status: number;
   createDate: Date;
   createBy: number;
@@ -24,6 +30,7 @@ interface UserAttributes {
 }
 interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
 type RoleType = typeof Role;
+type GenderType = typeof Gender;
 
 @Table({
   timestamps: false,
@@ -83,6 +90,32 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     allowNull: true,
   })
   updateBy!: number; 
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  email!: number; 
+
+  @ForeignKey(() => Gender)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  genderId!: number; 
+
+  @BelongsTo(() => Gender, "genderId")
+  gender!: GenderType;
+
+  @ForeignKey(() => Address)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  addressId!: number; 
+  
+  @BelongsTo(() => Address, "addressId")
+  address!: GenderType;
 
   @ForeignKey(() => Role)
   @Column({ type: DataType.INTEGER, allowNull: false })

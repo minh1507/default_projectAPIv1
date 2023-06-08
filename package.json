@@ -12,7 +12,7 @@
     "new-seed": "npx sequelize-cli seed:generate --name $NAME",
     "seed": "npx sequelize-cli db:seed:all",
     "undo-seed": "npx sequelize-cli db:seed:undo:all",
-    "dev": "npm run animal-serve",
+    "dev": "npm run serve",
     "kill-port": "sudo kill -9 `sudo lsof -t -i:$PORT`",
     "list-port": "sudo ss -ltn"
   },
