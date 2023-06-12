@@ -1,1 +1,5 @@
-<router-outlet></router-outlet>
+<p-toast position="top-right"></p-toast>
+<router-outlet *ngIf="screenWidth > 200"></router-outlet>
+<div *ngIf="screenWidth < 200" class="expect">
+  <p>Thiết bị không được hỗ trợ</p>
+</div>

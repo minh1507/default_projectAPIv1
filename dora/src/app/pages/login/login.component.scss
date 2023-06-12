@@ -18,5 +18,18 @@
     input[type="password"]::-ms-clear {
       display: none;
     }
+
+    .login-button{
+      width: 100%;
+      background-color: var(--blue-500);
+      color:  var(--surface-0);
+    }
+  }
+}
+
+@media screen and (max-width: 456px) {
+  .login-card {
+    width: 90% !important;
+    min-width: unset !important;
   }
 }
