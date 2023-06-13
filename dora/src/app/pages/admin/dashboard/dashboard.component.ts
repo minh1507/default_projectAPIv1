@@ -10,12 +10,17 @@ import { AuthAPIService } from 'src/app/services/auth.service';
 })
 export class DashboardComponent implements OnInit {
   username: string = '';
+  sidebarVisible: boolean = false;
 
   constructor(
     private auth: AuthAPIService,
     private cookie: CookieService,
     private router: Router
   ) {}
+
+  side(){
+    this.sidebarVisible = !this.sidebarVisible
+  }
 
   ngOnInit(): void {
     this.username = this.cookie.get('username');

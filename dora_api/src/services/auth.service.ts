@@ -8,6 +8,21 @@ import { Sequelize } from "sequelize-typescript";
 
 import jwt from "jsonwebtoken";
 
+export const render = async (data: any) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let record = await User.findOne({ where: { accessToken: data.accessToken, username: data.username } });
+      if (record) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 export const register = async (data: any) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -23,6 +38,38 @@ export const register = async (data: any) => {
         status: 1,
         createDate: new Date(),
       });
+
+      resolve(data.username);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const logout = async (data: any) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let record = data.result;
+
+      var newData: any = {
+        username: record.username,
+        role: record.role,
+      };
+
+      let newAccessToken = jwt.sign(
+        {
+          data: newData,
+        },
+        process.env.PRIVATE_TOKEN,
+        { expiresIn: "24h" },
+      );
+
+      await User.update(
+        {
+          accessToken: newAccessToken,
+        },
+        { where: { username: record.username } },
+      );
 
       resolve(data.username);
     } catch (error) {
@@ -128,7 +175,7 @@ export const refreshTK = async (data: any) => {
 
       const newData = {
         username: record.username,
-        role: record.role
+        role: record.role,
       };
       if (!isTokenExpired(record.refreshToken)) {
         let newAccessToken = jwt.sign(
@@ -145,7 +192,7 @@ export const refreshTK = async (data: any) => {
           { where: { username: record.username } },
         );
         resolve({
-          data: { username: record.username, accessToken: newAccessToken }
+          data: { username: record.username, accessToken: newAccessToken },
         });
       }
       if (isTokenExpired(record.refreshToken)) {
@@ -175,7 +222,7 @@ export const refreshTK = async (data: any) => {
             username: record.username,
             accessToken: newAccessToken,
             refreshToken: newRefreshToken,
-          }
+          },
         });
       }
     } catch (error) {

@@ -44,12 +44,10 @@ export async function notDublicateUser(req: any, res: Response, next: NextFuncti
     mes: message.NOT_DUBLICATE_RECORD_ACCOUNT,
   };
 
-  if(!record.status){
-    data.mes = message.NOT_DUBLICATE_RECORD_ACCOUNT
-    return res.status(200).json(responseAPIFailed(data));
-  }
-
   if (record) {
+    if (!record.status) {
+      return res.status(200).json(responseAPIFailed(data));
+    }
     req.body.result = record;
     next();
   } else {

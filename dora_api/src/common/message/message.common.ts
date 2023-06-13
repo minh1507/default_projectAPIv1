@@ -32,6 +32,13 @@ const message = {
     LOGIN_SUCCESS: "Đăng nhập thành công",
 
     TOKEN_HANDLE_EXPIRE_SUCCESS: "Xử lý token hết hạn thành công",
+
+    ACCEPT_ACESS: "Quyền truy cập",
+
+    LOG_OUT: "Thoát thành công",
+
+    ACCEPTED: "Cho phép truy cập",
+    NOT_ACCEPT: 'Khôn cho phép truy cập'
 }
 
 export default message

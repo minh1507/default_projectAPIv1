@@ -26,6 +26,13 @@ export class AuthAPIService {
   //   });
   // }
 
+  public render(data: any) {
+    return this.http.post<any>(enviroment.api_domain + this.sub + `render`, {
+      username: data.username,
+      accessToken: data.accessToken,
+    });
+  }
+
   public logout(data: any) {
     return this.http.post<any>(enviroment.api_domain + this.sub + 'logout', {
       username: data.username,

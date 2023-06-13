@@ -23,6 +23,7 @@ import { HeaderComponent } from './pages/admin/layout/header/header.component';
 import { FooterComponent } from './pages/admin/layout/footer/footer.component';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
+import { SidebarModule } from 'primeng/sidebar';
 
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { Interceptor } from './interceptor';
@@ -51,6 +52,7 @@ import { Interceptor } from './interceptor';
     ButtonModule,
     ReactiveFormsModule,
     ToastModule,
+    SidebarModule
   ],
   providers: [
     CookieService,

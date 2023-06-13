@@ -87,6 +87,18 @@ export class LoginComponent implements OnInit {
           });
         } else {
           this.cookieService.deleteAll();
+          let result = response.success[0].value;
+          let message = response.success[0].msg;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: message + ', Xin chào ' + result.username,
+          });
+
+          this.cookieService.set('role', result.role);
+          this.cookieService.set('accessToken', result.accessToken);
+          this.cookieService.set('refreshToken', result.refreshToken);
+          this.cookieService.set('username', result.username);
 
           let role = response.success[0].value.role;
           if (role == 'Admin') {
@@ -95,18 +107,6 @@ export class LoginComponent implements OnInit {
           if (role == 'User') {
             this.router.navigate(['trang-chu']);
           }
-          let result = response.success[0].value;
-          let message = response.success[0].msg
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Thành công',
-            detail: message + ", Xin chào " + result.username,
-          });
-
-          this.cookieService.set('role', result.role);
-          this.cookieService.set('accessToken', result.accessToken);
-          this.cookieService.set('refreshToken', result.refreshToken);
-          this.cookieService.set('username', result.username);
         }
       });
   }
