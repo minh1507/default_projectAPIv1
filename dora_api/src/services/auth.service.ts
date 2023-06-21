@@ -1,27 +1,8 @@
 import { isTokenExpired } from "./../validators/token.validator.ts";
-import { user, userWithId, userWithRefresh } from "../models/user.interface";
-import { genSaltSync, hashSync, compareSync } from "bcrypt-ts";
+import { genSaltSync, hashSync } from "bcrypt-ts";
 import { User } from "../entities/user.entities.ts";
-import message from "../common/message/message.common.ts";
-import { Role } from "../entities/role.entities.ts";
-import { Sequelize } from "sequelize-typescript";
 
 import jwt from "jsonwebtoken";
-
-export const render = async (data: any) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let record = await User.findOne({ where: { accessToken: data.accessToken, username: data.username } });
-      if (record) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
 
 export const register = async (data: any) => {
   return new Promise(async (resolve, reject) => {
@@ -33,8 +14,7 @@ export const register = async (data: any) => {
       await User.create({
         ...data,
         image: data.genderId == 1 ? process.env.ROOT_DOMAIN + ":" + process.env.MAIN_PORT + "/static/avartar/avatar-default-image-male.png" : process.env.ROOT_DOMAIN + ":" + process.env.MAIN_PORT + "/static/avartar/avatar-default-image-female.png",
-        genderId: data.genderId,
-        addressId: 1,
+        roleId: 2,
         status: 1,
         createDate: new Date(),
       });

@@ -27,6 +27,7 @@ import { SidebarModule } from 'primeng/sidebar';
 
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { Interceptor } from './interceptor';
+import { SidebarComponent } from './pages/admin/layout/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { Interceptor } from './interceptor';
     DashboardComponent,
     HeaderComponent,
     FooterComponent,
+    SidebarComponent,
   ],
   imports: [
     FormsModule,

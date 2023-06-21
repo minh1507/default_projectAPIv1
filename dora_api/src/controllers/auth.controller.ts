@@ -1,22 +1,9 @@
 import { Request, Response } from "express";
 import message from "../common/message/message.common.ts";
-import { user, userWithRefresh } from "../models/user.interface";
-import * as validator from "../validators/user.validator.ts";
+import { user } from "../models/user.interface";
 import * as service from "../services/auth.service.ts";
 import { validationResult } from "express-validator";
-import { responseAPISucess, responseAPIFailed } from "../common/message/response.common.ts";
-
-export const render = async (req: Request, res: Response) =>{
-  let data:any = req.body
-
-  let result = await service.render(data);
-  let release = {
-    data: result,
-    mes: result ? message.ACCEPTED : message.NOT_ACCEPT,
-  };
-  return res.status(200).json(responseAPISucess(release));
-}
-
+import { responseAPISucess } from "../common/message/response.common.ts";
 
 export const register = async (req: Request, res: Response) => {
   let data: user = req.body;

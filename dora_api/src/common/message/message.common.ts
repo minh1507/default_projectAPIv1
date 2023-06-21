@@ -3,7 +3,7 @@ const message = {
     INVALID_BODY_VALUE: "Invalid parameter",
     SERVER_ERROR: "Server error",
     
-    SUCCESS: "Success",
+    SUCCESS: "Thực thi thành công",
 
     ACCOUNT_NOT_FOUND: "Tài khoản không tồn tại", 
     ACOUNT_WRONG_ATTRIBURE: "Tài khoản không trùng khớp với dữ liệu", 
@@ -12,6 +12,7 @@ const message = {
     CREATE_ACCOUNT_SUCCESS: "Tạo tài khoản thành công",
     DUBLICATE_RECORD_ACCOUNT: "Tài khoản đã tồn tại",
     NOT_DUBLICATE_RECORD_ACCOUNT: "Tài khoản này không tồn tại",
+    ACCOUNT_LENGTH_INVALID: "Tài khoản phải trong khoảng từ 8 đến 20 ký tự",
 
     WRONG_PASSWORD_MATCH: "Mật khẩu phải từ 8 đến 20 ký tự, ít nhất 1 ký tự in hoa, 1 ký tự đặc biệt và 1 số",
     WRONG_PASSWORD_EMPTY: "Mật khẩu không được để trống",
@@ -25,6 +26,10 @@ const message = {
     WRONG_GENDER_ID_EMPTY: "Id giới tính không được để trống",
     WRONG_GENDER_ID_NUMERIC: "Id giới tính phải là số",
     WRONG_GENDER_ID_NOT_EXIST: "Id giới tính không tồn tại dữ liệu có sẵn",
+
+    WRONG_ADDRESS_ID_EMPTY: "Id địa chỉ không được để trống",
+    WRONG_ADDRESS_ID_NUMERIC: "Id địa chỉ phải là số",
+    WRONG_ADDRESS_ID_NOT_EXIST: "Id địa chỉ không tồn tại dữ liệu có sẵn",
    
     WRONG_USERNAME_REFRESHTK: "Username or refresh token not found",
     WRONG_REFRESH_TOKEN: "Refresh token not found", 
@@ -38,7 +43,7 @@ const message = {
     LOG_OUT: "Thoát thành công",
 
     ACCEPTED: "Cho phép truy cập",
-    NOT_ACCEPT: 'Khôn cho phép truy cập'
+    NOT_ACCEPT: 'Không cho phép truy cập',
 }
 
 export default message

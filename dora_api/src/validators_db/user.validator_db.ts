@@ -9,7 +9,7 @@ import { Sequelize } from "sequelize-typescript";
 export async function dublicateUser(req: Request, res: Response, next: NextFunction) {
   let username = req.body.username;
 
-  const record = await User.findOne({ where: { username: username } });
+  const record = await User.findOne({ where: { username: username, status: 1 } });
 
   let data = {
     data: username,
@@ -26,7 +26,7 @@ export async function notDublicateUser(req: any, res: Response, next: NextFuncti
   let username = req.body.username;
 
   const record: any = await User.findOne({
-    where: { username: username },
+    where: { username: username, status: 1},
     include: [
       {
         model: Role,

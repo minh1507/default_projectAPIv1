@@ -20,9 +20,9 @@ let catRoute = (app: any) => {
   router.get("/",  findAll);
   router.get("/path",  findPath);
   router.get("/:id",  findById);
-  router.post("/", auth.authorizations, rate.cat, upload.array("files"), create);
-  router.delete("/:id", auth.authorizations, rate.cat, deleteById);
-  router.put("/:id", rate.cat, update);
+  router.post("/", auth.authorizations, upload.array("files"), create);
+  router.delete("/:id", auth.authorizations, deleteById);
+  router.put("/:id", update);
   return app.use("/api/cat", router);
 };
 

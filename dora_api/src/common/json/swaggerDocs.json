@@ -1,13 +1,12 @@
-
 {
   "swagger": "2.0",
   "info": {
-      "title": "Cat",
-      "version": "1.0.0",
-      "description": "Cat API Documentation",
-      "license": {
-        "name": "MIT"
-      }
+    "title": "Dora",
+    "version": "1.0.0",
+    "description": "Phần mềm quản trị sinh viên",
+    "license": {
+      "name": "MIT"
+    }
   },
   "host": "localhost:3000/api",
   "schemes": ["http", "https"],
@@ -17,8 +16,12 @@
       "description": "API for Cat"
     },
     {
-      "name": "Auths",
-      "description": "API for Athentication"
+      "name": "Xác thực người dùng",
+      "description": "Phạm vi xác thực người dùng"
+    },
+    {
+      "name": "Người dùng",
+      "description": "Phạm vi người dùng"
     }
   ],
   "definitions": {
@@ -32,7 +35,7 @@
     "Cat": {
       "type": "object",
       "properties": {
-        "name":{
+        "name": {
           "type": "string"
         },
         "age": {
@@ -40,10 +43,10 @@
         }
       }
     },
-    "Cats":{
+    "Cats": {
       "type": "object",
       "properties": {
-        "cats":{
+        "cats": {
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/Cat"
@@ -54,16 +57,36 @@
     "Auth": {
       "type": "object",
       "properties": {
-        "username":{
+        "username": {
           "type": "string"
         },
         "password": {
           "type": "string"
         },
-        "roleId":{
+        "genderId": {
           "type": "number"
         },
-        "genderId":{
+        "addressId": {
+          "type": "number"
+        }
+      }
+    },
+    "create_user": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "roleId": {
+          "type": "number"
+        },
+        "genderId": {
+          "type": "number"
+        },
+        "addressId": {
           "type": "number"
         }
       }
@@ -71,7 +94,7 @@
     "Auth_Login": {
       "type": "object",
       "properties": {
-        "username":{
+        "username": {
           "type": "string"
         },
         "password": {
@@ -82,7 +105,7 @@
     "AuthRefreshToken": {
       "type": "object",
       "properties": {
-        "username":{
+        "username": {
           "type": "string"
         },
         "refreshToken": {
@@ -91,17 +114,69 @@
       }
     }
   },
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
+    "/user/me": {
+      "get": {
+        "tags": ["Người dùng"],
+        "security": [{ "Bearer": [] }],
+        "summary": "Chi tiết người dùng",
+        "responses": {
+          "200": {
+            "description": "Thành công"
+          },
+          "400": {
+            "description": "Không đủ quyền hạn"
+          }
+        }
+      }
+    },
+
+    "/user": {
+      "get": {
+        "tags": ["Người dùng"],
+        "security": [{ "Bearer": [] }],
+        "summary": "Danh sách người dùng",
+        "responses": {
+          "200": {
+            "description": "Thành công"
+          },
+          "400": {
+            "description": "Không đủ quyền hạn"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Người dùng"],
+        "summary": "Tạo mới người dùng",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Login",
+            "schema": {
+              "$ref": "#/definitions/create_user"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Wrong parameters"
+          }
+        }
+      }
+    },
+
     "/cat": {
       "get": {
         "tags": ["Cats"],
-        
+
         "summary": "Get all cats",
         "responses": {
           "200": {
@@ -109,9 +184,8 @@
             "schema": {
               "$ref": "#/definitions/Cats"
             }
-            
           },
-          "401":{
+          "401": {
             "description": "Unauthorized"
           }
         }
@@ -119,9 +193,7 @@
       "post": {
         "tags": ["Cats"],
         "summary": "Create new cat",
-        "security": [
-          {"Bearer": []}
-        ],
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "formData",
@@ -153,15 +225,15 @@
           "200": {
             "description": "OK"
           },
-          "400":{
+          "400": {
             "description": "Wrong parameters"
           }
         }
       }
     },
-    "/auth/login":{
+    "/auth/login": {
       "post": {
-        "tags": ["Auths"],
+        "tags": ["Xác thực người dùng"],
         "summary": "Login",
         "parameters": [
           {
@@ -178,7 +250,7 @@
           "200": {
             "description": "OK"
           },
-          "400":{
+          "400": {
             "description": "Wrong parameters"
           }
         }
@@ -196,24 +268,20 @@
       ],
       "delete": {
         "tags": ["Cats"],
-        "security": [
-          {"Bearer": []}
-        ],
+        "security": [{ "Bearer": [] }],
         "summary": "Delete a cat",
         "responses": {
           "200": {
-            "description": "OK" 
+            "description": "OK"
           },
-          "401":{
+          "401": {
             "description": "Unauthorized"
           }
         }
       },
       "get": {
         "tags": ["Cats"],
-        "security": [
-          {"Bearer": []}
-        ],
+        "security": [{ "Bearer": [] }],
         "summary": "Get a cat",
         "responses": {
           "200": {
@@ -221,27 +289,24 @@
             "schema": {
               "$ref": "#/definitions/Cats"
             }
-            
           },
-          "401":{
+          "401": {
             "description": "Unauthorized"
           }
         }
       },
       "put": {
         "tags": ["Cats"],
-        "security": [
-          {"Bearer": []}
-        ],
+        "security": [{ "Bearer": [] }],
         "summary": "Update a cat",
         "parameters": [
           {
-            "in":"body",
-            "name":"body",
-            "required":true,
+            "in": "body",
+            "name": "body",
+            "required": true,
             "description": "Update a cat",
             "schema": {
-              "$ref":"#/definitions/Cat"
+              "$ref": "#/definitions/Cat"
             }
           }
         ],
@@ -251,17 +316,16 @@
             "schema": {
               "$ref": "#/definitions/Cat"
             }
-            
           },
-          "401":{
+          "401": {
             "description": "Unauthorized"
           }
         }
       }
     },
-    "/auth/register":{
+    "/auth/register": {
       "post": {
-        "tags": ["Auths"],
+        "tags": ["Xác thực người dùng"],
         "summary": "Register",
         "parameters": [
           {
@@ -278,15 +342,15 @@
           "200": {
             "description": "OK"
           },
-          "400":{
+          "400": {
             "description": "Wrong parameters"
           }
         }
       }
     },
-    "/auth/refresh":{
+    "/auth/refresh": {
       "post": {
-        "tags": ["Auths"],
+        "tags": ["Xác thực người dùng"],
         "summary": "Refresh Token",
         "parameters": [
           {
@@ -303,7 +367,7 @@
           "200": {
             "description": "OK"
           },
-          "400":{
+          "400": {
             "description": "Wrong parameters"
           }
         }
@@ -311,7 +375,7 @@
     }
   },
   "securityDefinitions": {
-    "Bearer":{
+    "Bearer": {
       "type": "apiKey",
       "bearerFormat": "JWT",
       "in": "header",

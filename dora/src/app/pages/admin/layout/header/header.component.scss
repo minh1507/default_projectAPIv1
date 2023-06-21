@@ -1,0 +1,29 @@
+.header{
+  height: 70px;
+  border: 1px solid red;
+}
+
+.header > div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 100%;
+}
+
+p{
+  margin: 0;
+}
+
+.container-custom{
+  padding: 0 24px;
+}
+
+.text-head{
+  font-family:fantasy;
+  color: lightblue;
+  font-size: 2rem;
+}
+.text-tail{
+  font-family:cursive;
+}
