@@ -54,6 +54,19 @@
         }
       }
     },
+    "export_user": {
+      "type": "object",
+      "properties": {
+        "tuNgay": {
+          "type": "string",
+          "format": "date"
+        },
+        "denNgay": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
     "Auth": {
       "type": "object",
       "properties": {
@@ -132,7 +145,30 @@
         }
       }
     },
-
+    "/user/export": {
+      "post": {
+        "tags": ["Người dùng"],
+        "summary": "Export danh sách người dùng",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Login",
+            "schema": {
+              "$ref": "#/definitions/export_user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thành công"
+          },
+          "400": {
+            "description": "Không đủ quyền hạn"
+          }
+        }
+      }
+    },
     "/user": {
       "get": {
         "tags": ["Người dùng"],

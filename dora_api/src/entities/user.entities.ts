@@ -35,7 +35,7 @@ type GenderType = typeof Gender;
 
 @Table({
   timestamps: false,
-  tableName: "users",
+  tableName: "db_users",
 })
 export class User extends Model<UserAttributes, UserCreationAttributes> {
   @Column({

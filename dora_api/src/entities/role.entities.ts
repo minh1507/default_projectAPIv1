@@ -16,7 +16,7 @@ interface RoleCreationAttributes extends Optional<RoleAttributes, "id"> {}
 type UserType = typeof User
 @Table({
   timestamps: false,
-  tableName: "roles",
+  tableName: "dm_roles",
 })
 export class Role extends Model<RoleAttributes, RoleCreationAttributes> {
   @HasOne(() => User, "roleId")

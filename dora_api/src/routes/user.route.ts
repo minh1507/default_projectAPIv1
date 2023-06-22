@@ -1,5 +1,5 @@
 import express from "express";
-import { findAll, me, create } from "../controllers/user.controller.ts";
+import { findAll, me, create, export_template } from "../controllers/user.controller.ts";
 import * as rate from "../middleware/rateLimit.middleware.ts";
 import * as auth from "../middleware/authorization.middleware.ts";
 import message from "../common/message/message.common.ts";
@@ -58,6 +58,7 @@ let userRoute = (app: any) => {
     dublicateUser,
     create,
   );
+  router.post("/export",  export_template)
   return app.use("/api/user", router);
 };
 

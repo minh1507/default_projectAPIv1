@@ -24,7 +24,7 @@ import { User } from "./user.entities.ts";
 
   @Table({
     timestamps: false,
-    tableName: "addresses",
+    tableName: "dm_addresses",
   })
   export class Address extends Model<AddressAttributes, AddressCreationAttributes> {
     @HasOne(() => User, "addressId")

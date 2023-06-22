@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert("users", [
+    await queryInterface.bulkInsert("db_users", [
       {
         roleId: 1,
         username: "duongdoican@gmail.com",

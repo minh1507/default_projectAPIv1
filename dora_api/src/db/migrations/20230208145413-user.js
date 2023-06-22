@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return await queryInterface.createTable("users", {
+    return await queryInterface.createTable("db_users", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,7 +13,7 @@ module.exports = {
       roleId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "roles",
+          model: "dm_roles",
           key: "id",
         },
         // onUpdate: 'CASCADE',
@@ -34,14 +34,14 @@ module.exports = {
       genderId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "genders",
+          model: "dm_genders",
           key: "id",
         },
       },
       addressId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "addresses",
+          model: "dm_addresses",
           key: "id",
         },
       },

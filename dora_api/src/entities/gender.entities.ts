@@ -23,7 +23,7 @@ import { User } from "./user.entities.ts";
 
   @Table({
     timestamps: false,
-    tableName: "genders",
+    tableName: "dm_genders",
   })
   export class Gender extends Model<GenderAttributes, GenderCreationAttributes> {
     @HasOne(() => User, "genderId")

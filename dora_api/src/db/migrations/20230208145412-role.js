@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return await queryInterface.createTable("roles", {
+    return await queryInterface.createTable("dm_roles", {
       id: {
         allowNull: false,
         autoIncrement: true,
