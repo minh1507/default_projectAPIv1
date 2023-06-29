@@ -47,6 +47,7 @@ export const applyMails = async (email: any, token: any) => {
       mail(message.CODE_RECIEVE, math, email)
 
       let decode = jwt.verify(token[1], process.env.PRIVATE_TOKEN);
+      
       await User.update(
         {
           codeChange: math.toString(),
@@ -54,7 +55,7 @@ export const applyMails = async (email: any, token: any) => {
         },
         { where: { username: decode.data.username } },
       );
-      
+
       setTimeout(async() => {
         await User.update(
           {
