@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from "express";
 import { genSaltSync, hashSync, compareSync } from "bcrypt-ts";
 import { Role } from "../entities/role.entities.ts";
 import { Sequelize } from "sequelize-typescript";
+import jwt from "jsonwebtoken"
 
 export async function dublicateUser(req: Request, res: Response, next: NextFunction) {
   let username = req.body.username;
@@ -22,6 +23,26 @@ export async function dublicateUser(req: Request, res: Response, next: NextFunct
   }
 }
 
+
+export const invalidAccountByToken = async (req: Request, res: Response, next: NextFunction) => {
+  let authorization:any = req.headers["authorization"];
+  let token = authorization.split(" ")[1];
+
+  let decode = jwt.verify(token, process.env.PRIVATE_TOKEN)
+
+  const record = await User.findOne({ where: { username: decode.data.username, status: 1 } });
+
+  let data = {
+    data: {},
+    mes: message.NOT_DUBLICATE_RECORD_ACCOUNT,
+  };
+  if (!record) {
+    res.status(200).json(responseAPIFailed(data));
+  } else {
+    next();
+  }
+}
+
 export async function dublicateEmail(req: any, res: Response, next: NextFunction){
   let email = req.body.email
 
@@ -31,6 +52,7 @@ export async function dublicateEmail(req: any, res: Response, next: NextFunction
     data: email,
     mes: message.WRONG_EMAIL_IS_EXIST,
   };
+
   if (record) {
     res.status(200).json(responseAPIFailed(data));
   } else {

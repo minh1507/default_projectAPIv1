@@ -6,6 +6,70 @@ import { Gender } from "../entities/gender.entities.ts";
 import { Address } from "../entities/address.entities.ts";
 import { genSaltSync, hashSync } from "bcrypt-ts";
 import { Op } from "sequelize";
+import message from "../common/message/message.common.ts";
+import { mail } from "../common/static/mailer.static.ts";
+
+export const applyMailActives = async (code: any, token: any) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let decode = jwt.verify(token, process.env.PRIVATE_TOKEN);
+      const record:any = await User.findOne({ where: { username: decode.data.username, status: 1 } });
+      if(code == record.codeChange){
+        mail("", message.ACCOUNT_ACTIVE, decode.email)
+        await User.update(
+          {
+            active: 1,
+            codeChange: ""
+          },
+          { where: { username: decode.data.username } },
+        );
+
+       
+        resolve(1);
+      }else{
+        resolve(0);
+      }
+      
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const applyMails = async (email: any, token: any) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let min = Math.ceil(100000);
+      let max = Math.floor(999999);
+
+      let math = Math.floor(Math.random() * (max - min) + min);
+
+      mail(message.CODE_RECIEVE, math, email)
+
+      let decode = jwt.verify(token[1], process.env.PRIVATE_TOKEN);
+      await User.update(
+        {
+          codeChange: math.toString(),
+          email: email,
+        },
+        { where: { username: decode.data.username } },
+      );
+      
+      setTimeout(async() => {
+        await User.update(
+          {
+            codeChange: ""
+          },
+          { where: { username: decode.data.username } },
+        );
+      }, 10000);
+
+      resolve(math);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 export const findAll = async (start: any, item: any) => {
   return new Promise(async (resolve, reject) => {
@@ -75,8 +139,8 @@ export const export_all = async (income: any) => {
         attributes: ["id", "username", [Sequelize.col("role.name"), "role"], "email", [Sequelize.col("gender.name"), "gender"], [Sequelize.col("address.name"), "address"], "image", [Sequelize.fn("CONCAT", Sequelize.col("firstName"), " ", Sequelize.col("lastName")), "name"]],
         where: {
           createDate: {
-            [Op.between]: [new Date(income.tuNgay), new Date(income.denNgay)]
-          }
+            [Op.between]: [new Date(income.tuNgay), new Date(income.denNgay)],
+          },
         },
         order: [["name", "ASC"]],
         raw: true,

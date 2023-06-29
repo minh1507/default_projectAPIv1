@@ -1,12 +1,12 @@
 import express from "express";
-import { findAll, me, create, export_template, applyMail } from "../controllers/user.controller.ts";
+import { findAll, me, create, export_template, applyMail, applyMailActive } from "../controllers/user.controller.ts";
 import * as rate from "../middleware/rateLimit.middleware.ts";
 import * as auth from "../middleware/authorization.middleware.ts";
 import message from "../common/message/message.common.ts";
 import { body } from "express-validator";
 import { findRoleById } from "../validators_db/role.validators_db.ts";
 import { findGenderById } from "../validators_db/gender.validators_db.ts";
-import { dublicateUser, dublicateEmail } from "../validators_db/user.validator_db.ts";
+import { dublicateUser, dublicateEmail, invalidAccountByToken } from "../validators_db/user.validator_db.ts";
 import { findAddressById } from "../validators_db/address.validators_db.ts";
 
 let router = express.Router();
@@ -69,6 +69,15 @@ let userRoute = (app: any) => {
     body("email").isEmail().withMessage(message.EMAIL_IS_INVALID),
     dublicateEmail,
     applyMail
+  );
+  router.post(
+    "/apply-mail-active",
+    rate.portal_trade,
+    auth.authorizations,
+    body("code").escape().notEmpty().withMessage(message.CODE_IS_EMPTY),
+    body("code").isLength({min: 6, max: 6}).withMessage(message.CODE_IS_INVALID),
+    invalidAccountByToken,
+    applyMailActive
   );
   return app.use("/api/user", router);
 };

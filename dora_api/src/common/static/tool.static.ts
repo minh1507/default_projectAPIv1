@@ -12,3 +12,7 @@ export const ifnull = (pre: any, cur: any) => {
 export const source_template = (file: any) => {
   return __dirsource + "/template/" + file + ".xlsx";
 };
+
+export const source_mail= () => {
+  return __dirsource + "/common/mail/mail.html";
+};

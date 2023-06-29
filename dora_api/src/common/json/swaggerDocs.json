@@ -67,6 +67,22 @@
         }
       }
     },
+    "email": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "emailActive": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      }
+    },
     "Auth": {
       "type": "object",
       "properties": {
@@ -142,6 +158,54 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
+    "/user/apply-mail-active": {
+      "post": {
+        "tags": ["Người dùng"],
+        "summary": "Kích hoạt tài khoản",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/emailActive"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thành công"
+          },
+          "400": {
+            "description": "Không đủ quyền hạn"
+          }
+        }
+      }
+    },
+    "/user/apply-mail": {
+      "post": {
+        "tags": ["Người dùng"],
+        "summary": "Thay đổi email",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/email"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thành công"
+          },
+          "400": {
+            "description": "Không đủ quyền hạn"
+          }
+        }
+      }
+    },
     "/user/me": {
       "get": {
         "tags": ["Người dùng"],

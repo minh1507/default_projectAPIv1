@@ -7,12 +7,30 @@ import ExcelJS from "exceljs";
 
 import { fileURLToPath } from "url";
 import path from "path";
-import { name_baocao, font_style_head, alignment_style_head, timer, border, image_ex } from "../common/static/excel.static.ts";
+import { name_baocao, font_style_head, alignment_style_head, timer, border } from "../common/static/excel.static.ts";
 import { source_template } from "../common/static/tool.static.ts";
+import jwt from "jsonwebtoken"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const __dirsource = path.join(__dirname, "..");
+
+export const applyMailActive = async (req: Request, res: Response) => {
+  let code = req.body.code
+  let authorization:any = req.headers["authorization"];
+  let token = authorization.split(" ")[1];
+  let result = await service.applyMailActives(code, token)
+  let response = validationResult(req);
+  if (response.isEmpty()) {
+    let release = {
+      data: {},
+      mes: result ? message.ACCOUNT_ACTIVE : message.ACCOUNT_ACTIVE_FAILED,
+    };
+    return res.status(200).json(responseAPISucess(release));
+  }
+
+  return res.status(200).json({ errors: response.array() });
+}
 
 export const findAll = async (req: Request, res: Response) => {
   let { start, item } = req.query;
@@ -26,13 +44,15 @@ export const findAll = async (req: Request, res: Response) => {
 };
 
 export const applyMail = async (req: Request, res: Response) => {
-  let data: any = req.body;
+  let authorization:any = req.headers["authorization"];
+  let token = authorization.split(" ");
   let response = validationResult(req);
+  let email = req.body.email
+  await service.applyMails(email, token)
 
   if (response.isEmpty()) {
-    await service.create(data);
     let release = {
-      data: true,
+      data: {},
       mes: message.MAIL_SENT_SUCCESS,
     };
     return res.status(200).json(responseAPISucess(release));

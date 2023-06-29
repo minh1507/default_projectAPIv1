@@ -55,7 +55,14 @@ const message = {
     EMAIL_IS_INVALID: "Email không hợp lệ",
     WRONG_EMAIL_IS_EXIST: "Email đã tồn tại",
 
-    MAIL_SENT_SUCCESS: "Gửi mã xác nhận thành công"
+    MAIL_SENT_SUCCESS: "Gửi mã xác nhận thành công",
+    ACCOUNT_ACTIVE: "Kích hoạt tài khoản thành công",
+    ACCOUNT_ACTIVE_FAILED: "Kích hoạt tài khoản thất bại",
+
+    CODE_IS_EMPTY: "Mã trống",
+    CODE_IS_INVALID: "Mã không hợp lệ",
+
+    CODE_RECIEVE: "Mã xác nhận của bạn là"
 }
 
 export default message
