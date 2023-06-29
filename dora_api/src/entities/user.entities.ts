@@ -23,6 +23,10 @@ interface UserAttributes {
   genderId: number;
   addressId: number;
   image: string;
+  firstName: string;
+  lastName: string;
+  codeChange: string;
+  active: number;
   status: number;
   createDate: Date;
   createBy: number;
@@ -40,6 +44,12 @@ type GenderType = typeof Gender;
 export class User extends Model<UserAttributes, UserCreationAttributes> {
   @Column({
     type: DataType.STRING,
+    allowNull: true,
+  })
+  codeChange!: string
+
+  @Column({
+    type: DataType.STRING,
     allowNull: false,
   })
   username!: string;
@@ -49,6 +59,18 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     allowNull: false,
   })
   password!: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  firstName!: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  lastName!: string;
 
   @Column({
     type: DataType.TEXT,
@@ -67,6 +89,12 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     allowNull: true,
   })
   image!: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+  })
+  active!: number
 
   @Column({
     type: DataType.BOOLEAN,

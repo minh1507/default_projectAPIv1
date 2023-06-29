@@ -5,11 +5,14 @@ import jwt from "jsonwebtoken";
 import { Gender } from "../entities/gender.entities.ts";
 import { Address } from "../entities/address.entities.ts";
 import { genSaltSync, hashSync } from "bcrypt-ts";
+import { Op } from "sequelize";
 
-export const findAll = async () => {
+export const findAll = async (start: any, item: any) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const data: any = await User.findAll({
+      var data: any = [];
+
+      data = await User.findAll({
         include: [
           {
             model: Role,
@@ -27,11 +30,63 @@ export const findAll = async () => {
             required: true,
           },
         ],
-        attributes: ["id", "username", [Sequelize.col("role.name"), "role"], "email", [Sequelize.col("gender.name"), "gender"], [Sequelize.col("address.name"), "address"], "image"],
-        // plain: true,
+        attributes: ["id", "username", [Sequelize.col("role.name"), "role"], "email", [Sequelize.col("gender.name"), "gender"], [Sequelize.col("address.name"), "address"], "image", [Sequelize.fn("CONCAT", Sequelize.col("firstName"), " ", Sequelize.col("lastName")), "name"]],
+        offset: start - 1,
+        limit: parseInt(item),
+        subQuery: false,
+        order: [["name", "ASC"]],
         raw: true,
       });
-      resolve(data);
+
+      var result = {
+        data: data,
+        total: data.length,
+      };
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const export_all = async (income: any) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      var data: any = [];
+
+      data = await User.findAll({
+        include: [
+          {
+            model: Role,
+            attributes: [],
+            required: true,
+          },
+          {
+            model: Gender,
+            attributes: [],
+            required: true,
+          },
+          {
+            model: Address,
+            attributes: [],
+            required: true,
+          },
+        ],
+        attributes: ["id", "username", [Sequelize.col("role.name"), "role"], "email", [Sequelize.col("gender.name"), "gender"], [Sequelize.col("address.name"), "address"], "image", [Sequelize.fn("CONCAT", Sequelize.col("firstName"), " ", Sequelize.col("lastName")), "name"]],
+        where: {
+          createDate: {
+            [Op.between]: [new Date(income.tuNgay), new Date(income.denNgay)]
+          }
+        },
+        order: [["name", "ASC"]],
+        raw: true,
+      });
+
+      var result = {
+        data: data,
+        total: data.length,
+      };
+      resolve(result);
     } catch (error) {
       reject(error);
     }
@@ -61,7 +116,7 @@ export const me = async (token: any) => {
             required: true,
           },
         ],
-        attributes: ["username", [Sequelize.col("role.name"), "role"], "email", [Sequelize.col("gender.name"), "gender"], [Sequelize.col("address.name"), "address"], "image"],
+        attributes: ["username", [Sequelize.col("role.name"), "role"], "email", [Sequelize.col("gender.name"), "gender"], [Sequelize.col("address.name"), "address"], "image", [Sequelize.fn("CONCAT", Sequelize.col("firstName"), " ", Sequelize.col("lastName")), "name"]],
         // plain: true,
         raw: true,
       });

@@ -22,6 +22,22 @@ export async function dublicateUser(req: Request, res: Response, next: NextFunct
   }
 }
 
+export async function dublicateEmail(req: any, res: Response, next: NextFunction){
+  let email = req.body.email
+
+  const record = await User.findOne({ where: {email: email, status: 1} })
+
+  let data = {
+    data: email,
+    mes: message.WRONG_EMAIL_IS_EXIST,
+  };
+  if (record) {
+    res.status(200).json(responseAPIFailed(data));
+  } else {
+    next();
+  }
+}
+
 export async function notDublicateUser(req: any, res: Response, next: NextFunction) {
   let username = req.body.username;
 
@@ -34,7 +50,7 @@ export async function notDublicateUser(req: any, res: Response, next: NextFuncti
         required: true,
       },
     ],
-    attributes: ["username", [Sequelize.col("role.name"), "role"], "password", "accessToken", "refreshToken", "status"],
+    attributes: ["username", [Sequelize.col("role.name"), "role"], "password", "accessToken", "refreshToken", "status", [Sequelize.fn('CONCAT', Sequelize.col("firstName"), " ", Sequelize.col("lastName")), "name"]],
     // plain: true,
     raw: true,
   });

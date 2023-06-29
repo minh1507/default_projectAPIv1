@@ -16,6 +16,8 @@ let authRoute = (app: any) => {
     rate.auth,
     body("username").escape().notEmpty().withMessage(message.WRONG_ACCOUNT_EMPTY),
     body("username").isLength({min: 8, max: 20}).withMessage(message.ACCOUNT_LENGTH_INVALID),
+    body("firstName").escape().notEmpty().withMessage(message.FIRST_NAME_EMPTY),
+    body("lastName").escape().notEmpty().withMessage(message.LAST_NAME_EMPTY),
     body("password").escape().notEmpty().withMessage(message.WRONG_PASSWORD_EMPTY),
     body("password")
       .escape()

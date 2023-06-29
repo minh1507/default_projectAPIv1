@@ -14,6 +14,9 @@ const message = {
     NOT_DUBLICATE_RECORD_ACCOUNT: "Tài khoản này không tồn tại",
     ACCOUNT_LENGTH_INVALID: "Tài khoản phải trong khoảng từ 8 đến 20 ký tự",
 
+    FIRST_NAME_EMPTY: "Họ không được để trống",
+    LAST_NAME_EMPTY: "Tên không được để trống",
+
     WRONG_PASSWORD_MATCH: "Mật khẩu phải từ 8 đến 20 ký tự, ít nhất 1 ký tự in hoa, 1 ký tự đặc biệt và 1 số",
     WRONG_PASSWORD_EMPTY: "Mật khẩu không được để trống",
     WRONG_PASSWORD_COMPARE: "Sai mật khẩu",
@@ -44,6 +47,15 @@ const message = {
 
     ACCEPTED: "Cho phép truy cập",
     NOT_ACCEPT: 'Không cho phép truy cập',
+
+    DATE_IS_EMPTY: "Ngày không được để trống",
+    DATE_IS_INVALID: "Ngày không hợp lệ",
+
+    EMAIL_IS_EMPTY: "Email không được để trống",
+    EMAIL_IS_INVALID: "Email không hợp lệ",
+    WRONG_EMAIL_IS_EXIST: "Email đã tồn tại",
+
+    MAIL_SENT_SUCCESS: "Gửi mã xác nhận thành công"
 }
 
 export default message

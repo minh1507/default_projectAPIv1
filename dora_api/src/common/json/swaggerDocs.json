@@ -81,6 +81,12 @@
         },
         "addressId": {
           "type": "number"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
         }
       }
     },
@@ -101,6 +107,12 @@
         },
         "addressId": {
           "type": "number"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
         }
       }
     },
@@ -149,11 +161,11 @@
       "post": {
         "tags": ["Người dùng"],
         "summary": "Export danh sách người dùng",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "body",
             "name": "body",
-            "description": "Login",
             "schema": {
               "$ref": "#/definitions/export_user"
             }
@@ -174,6 +186,20 @@
         "tags": ["Người dùng"],
         "security": [{ "Bearer": [] }],
         "summary": "Danh sách người dùng",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "type": "number",
+            "description": "Giá trị bắt đầu pagination"
+          },
+          {
+            "in": "query",
+            "name": "item",
+            "type": "number",
+            "description": "Tổng số bản ghi trong 1 page"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Thành công"
@@ -191,7 +217,6 @@
           {
             "in": "body",
             "name": "body",
-            "description": "Login",
             "schema": {
               "$ref": "#/definitions/create_user"
             }

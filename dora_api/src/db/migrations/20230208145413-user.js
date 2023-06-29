@@ -19,6 +19,10 @@ module.exports = {
         // onUpdate: 'CASCADE',
         // onDelete: 'CASCADE',
       },
+      codeChange: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
       username: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -26,6 +30,14 @@ module.exports = {
       password: { 
         allowNull: false, 
         type: Sequelize.STRING.BINARY 
+      },
+      firstName: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      lastName: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       email:{
         allowNull: true,
@@ -51,6 +63,11 @@ module.exports = {
       },
       accessToken: Sequelize.TEXT,
       refreshToken: Sequelize.TEXT,
+      active: {
+        allowNull: false,
+        type:Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       status: {
         allowNull: false,
         type:Sequelize.BOOLEAN,

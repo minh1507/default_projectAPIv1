@@ -1,12 +1,12 @@
 import express from "express";
-import { findAll, me, create, export_template } from "../controllers/user.controller.ts";
+import { findAll, me, create, export_template, applyMail } from "../controllers/user.controller.ts";
 import * as rate from "../middleware/rateLimit.middleware.ts";
 import * as auth from "../middleware/authorization.middleware.ts";
 import message from "../common/message/message.common.ts";
 import { body } from "express-validator";
 import { findRoleById } from "../validators_db/role.validators_db.ts";
 import { findGenderById } from "../validators_db/gender.validators_db.ts";
-import { dublicateUser } from "../validators_db/user.validator_db.ts";
+import { dublicateUser, dublicateEmail } from "../validators_db/user.validator_db.ts";
 import { findAddressById } from "../validators_db/address.validators_db.ts";
 
 let router = express.Router();
@@ -19,7 +19,9 @@ let userRoute = (app: any) => {
     rate.portal_trade,
     auth.authorizations,
     body("username").escape().notEmpty().withMessage(message.WRONG_ACCOUNT_EMPTY),
-    body("username").isLength({min: 8, max: 20}).withMessage(message.ACCOUNT_LENGTH_INVALID),
+    body("username").isLength({ min: 8, max: 20 }).withMessage(message.ACCOUNT_LENGTH_INVALID),
+    body("firstName").escape().notEmpty().withMessage(message.FIRST_NAME_EMPTY),
+    body("lastName").escape().notEmpty().withMessage(message.LAST_NAME_EMPTY),
     body("password").escape().notEmpty().withMessage(message.WRONG_PASSWORD_EMPTY),
     body("password")
       .escape()
@@ -58,7 +60,16 @@ let userRoute = (app: any) => {
     dublicateUser,
     create,
   );
-  router.post("/export",  export_template)
+  router.post("/export", rate.portal_trade, auth.authorizations, body("tuNgay").escape().notEmpty().withMessage(message.DATE_IS_EMPTY), body("tuNgay").isDate({ format: "YYYY-MM-DD" }).withMessage(message.DATE_IS_INVALID), body("denNgay").escape().notEmpty().withMessage(message.DATE_IS_EMPTY), body("denNgay").isDate({ format: "YYYY-MM-DD" }).withMessage(message.DATE_IS_INVALID), export_template);
+  router.post(
+    "/apply-mail",
+    rate.portal_trade,
+    auth.authorizations,
+    body("email").escape().notEmpty().withMessage(message.EMAIL_IS_EMPTY),
+    body("email").isEmail().withMessage(message.EMAIL_IS_INVALID),
+    dublicateEmail,
+    applyMail
+  );
   return app.use("/api/user", router);
 };
 

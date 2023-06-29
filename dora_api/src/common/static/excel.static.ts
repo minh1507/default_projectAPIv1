@@ -1,3 +1,5 @@
+import  axios from "axios"
+
 export const creator = "Summer";
 export const views = [
   {
@@ -41,5 +43,10 @@ export const timer = (tuNgay: Date, denNgay: Date) => {
     let month_denNgay = (denNgay.getMonth() + 1) < 10 ? "0" + (denNgay.getMonth() + 1) : (denNgay.getMonth() + 1)
     let year_denNgay = denNgay.getFullYear()
 
-    return "Từ ngày " + day_tuNgay + "-" + month_tuNgay + '-' + year_tuNgay + " đến ngày " + day_denNgay + "-" + month_denNgay + "-" + year_denNgay
+    return "Trong khoảng từ ngày " + day_tuNgay + "-" + month_tuNgay + '-' + year_tuNgay + " đến ngày " + day_denNgay + "-" + month_denNgay + "-" + year_denNgay
 }
+export const image_ex = async () => {
+  let image = await axios.get(`http:/localhost:3000/static/avartar/avatar-default-image-male.png`, {responseType: 'arraybuffer'});
+  return Buffer.from(image.data).toString('base64') as string;
+} 
+

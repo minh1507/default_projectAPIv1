@@ -16,6 +16,7 @@ export const register = async (data: any) => {
         image: data.genderId == 1 ? process.env.ROOT_DOMAIN + ":" + process.env.MAIN_PORT + "/static/avartar/avatar-default-image-male.png" : process.env.ROOT_DOMAIN + ":" + process.env.MAIN_PORT + "/static/avartar/avatar-default-image-female.png",
         roleId: 2,
         status: 1,
+        active: 0,
         createDate: new Date(),
       });
 
@@ -66,6 +67,7 @@ export const login = async (data: any) => {
         var newData: any = {
           username: record.username,
           role: record.role,
+          name: record.name
         };
 
         if (isTokenExpired(record.refreshToken)) {
@@ -115,6 +117,7 @@ export const login = async (data: any) => {
         var newData: any = {
           username: record.username,
           role: record.role,
+          name: record.name
         };
 
         let newRefreshToken = jwt.sign(
@@ -156,6 +159,7 @@ export const refreshTK = async (data: any) => {
       const newData = {
         username: record.username,
         role: record.role,
+        name: record.name
       };
       if (!isTokenExpired(record.refreshToken)) {
         let newAccessToken = jwt.sign(
